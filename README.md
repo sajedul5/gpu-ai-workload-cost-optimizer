@@ -28,7 +28,7 @@ Spot and right-sized GPU nodes, scale-to-zero with Karpenter and KEDA, and cost-
 - [Success measures](#success-measures)
 - [Repository layout](#repository-layout)
 - [Getting started](#getting-started)
-- [Working on this repo with Claude Code](#working-on-this-repo-with-claude-code)
+- [Built with Claude Code](#built-with-claude-code)
 - [Security](#security)
 - [Author and free cost review](#author)
 
@@ -59,8 +59,6 @@ Four levers, applied together.
 ## Architecture
 
 ![Architecture diagram: SQS feeds KEDA, which scales GPU pods; Karpenter launches Spot or On-Demand GPU nodes; DCGM metrics and prices flow to Prometheus and Grafana](docs/images/architecture.png)
-
-The diagram is generated from code: [`docs/diagrams/architecture.py`](docs/diagrams/architecture.py).
 
 ## How a job flows
 
@@ -180,61 +178,29 @@ Targets are set per environment after the Phase 1 baseline. These are the number
 ```text
 .
 ├── README.md
-├── CLAUDE.md                     # project memory for Claude Code
-├── .claude/
-│   ├── settings.json             # shared permissions + hooks
-│   ├── hooks/                    # safety and validation scripts
-│   ├── skills/                   # repeatable procedures (Karpenter, KEDA, cost, diagram)
-│   └── agents/finops-reviewer.md # cost-focused review subagent
-├── docs/
-│   ├── diagrams/architecture.py  # diagram source (AWS icons)
-│   └── images/architecture.png
+├── CLAUDE.md          # project rules for Claude Code
+├── .claude/           # shared Claude Code settings, hooks and skills
+├── docs/images/       # architecture diagram
 │
 │   # planned
-├── terraform/                    # VPC, EKS, IAM, SQS, interruption queue
-├── k8s/
-│   ├── karpenter/                # NodePools, EC2NodeClasses
-│   ├── keda/                     # ScaledObjects, ScaledJobs, auth
-│   └── monitoring/               # Prometheus, DCGM exporter, recording rules
-├── dashboards/                   # Grafana JSON
-└── examples/                     # sample inference and training workloads
+├── terraform/         # VPC, EKS, IAM, SQS
+├── k8s/               # Karpenter, KEDA, monitoring
+├── dashboards/        # Grafana
+└── examples/          # sample GPU workloads
 ```
 
 ## Getting started
 
-> The platform code lands phase by phase. Today you can render the architecture and use the Claude Code setup.
+The platform code lands phase by phase. You will need an AWS account with EKS permissions, `terraform`, `kubectl`, `helm`, and GPU instance quota in your Region.
 
-**Prerequisites** (for later phases): AWS account with EKS permissions, `terraform` ≥ 1.6, `kubectl`, `helm`, and GPU instance quota in your Region (`g5`/`g6` Spot and On-Demand).
+## Built with Claude Code
 
-**Render the architecture diagram**
+This repo uses simple [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) best practices:
 
-```bash
-brew install graphviz
-python3 -m venv .venv
-.venv/bin/pip install diagrams pillow
-.venv/bin/python docs/diagrams/architecture.py
-```
-
-## Working on this repo with Claude Code
-
-This repo ships a shared [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) setup, so every contributor's assistant follows the same rules.
-
-| Piece | File | Purpose |
-|---|---|---|
-| **Memory** | [`CLAUDE.md`](CLAUDE.md) | Project facts, commands, conventions and safety rules, loaded every session. Personal notes go in `CLAUDE.local.md` (git-ignored). |
-| **Permissions** | [`.claude/settings.json`](.claude/settings.json) | Pre-approves read-only checks (`terraform validate`, `kubeconform`); denies reading secrets and `~/.aws`. Personal overrides go in `.claude/settings.local.json` (git-ignored). |
-| **Hooks** | [`.claude/hooks/`](.claude/hooks) | `block-dangerous-commands.sh` stops infrastructure-changing commands. `block-secrets.sh` stops keys and real account IDs from entering this public repo. `format-and-validate.sh` formats Terraform and validates YAML, JSON and shell after every edit. |
-| **Skills** | [`.claude/skills/`](.claude/skills) | `karpenter-gpu-nodepool`, `keda-scale-to-zero`, `gpu-cost-per-job`, `architecture-diagram`. Claude loads one when a task matches, or run it as `/<skill-name>`. |
-| **Subagent** | [`.claude/agents/finops-reviewer.md`](.claude/agents/finops-reviewer.md) | Read-only reviewer for cost waste, Spot risk and public-repo hygiene. Ask: "use finops-reviewer on my changes". |
-
-Practices this setup follows:
-
-- **Keep memory short.** `CLAUDE.md` holds facts and rules; procedures live in skills, which load only when needed.
-- **Enforce with hooks, not prompts.** Anything that must never happen (deleting infrastructure, leaking keys) is a hook that exits with code 2, not a request in text.
-- **Humans apply changes.** Claude writes and validates infrastructure code; a person reviews the plan and applies it.
-- **Commit shared config, ignore personal config.** `.claude/settings.json` and `CLAUDE.md` are in git; `*.local.*` files are not.
-
-Hook scripts need `jq`. Optional validators: `terraform`, `kubeconform`, `yamllint`, `shellcheck`.
+- **`CLAUDE.md`** keeps the project rules and conventions in one short file.
+- **Hooks** block risky commands and stop secrets from being committed.
+- **Skills** hold repeatable steps for Karpenter, KEDA and cost reporting.
+- **A person reviews and applies** every infrastructure change.
 
 ## Security
 
