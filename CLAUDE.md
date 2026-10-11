@@ -13,7 +13,7 @@ and cost-per-job dashboards in Prometheus and Grafana. Public, client-facing rep
 
 - `docs/diagrams/architecture.py` – source of `docs/images/architecture.png` (mingrammer `diagrams`)
 - `docs/images/` – rendered images used by README.md
-- `.claude/` – shared Claude Code config: settings, hooks, skills, subagents
+- `.claude/` – shared Claude Code config: settings, hooks, skills
 - Planned (not yet created): `terraform/`, `k8s/karpenter/`, `k8s/keda/`, `k8s/monitoring/`, `dashboards/`, `examples/`
 
 ## Commands
