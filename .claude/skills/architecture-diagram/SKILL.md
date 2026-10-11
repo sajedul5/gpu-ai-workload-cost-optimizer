@@ -11,7 +11,7 @@ The PNG is generated. Edit `docs/diagrams/architecture.py`, never the image.
 
 ```bash
 brew install graphviz                       # once
-python3 -m venv .venv && .venv/bin/pip install diagrams   # once
+python3 -m venv .venv && .venv/bin/pip install diagrams pillow   # once
 .venv/bin/python docs/diagrams/architecture.py
 ```
 
