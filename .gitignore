@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+
+# Secrets and local config
+.env
+.env.*
+*.pem
+kubeconfig*
+.claude/settings.local.json
+CLAUDE.local.md
+
+# OS
+.DS_Store
