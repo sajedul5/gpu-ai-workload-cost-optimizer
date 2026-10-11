@@ -10,6 +10,11 @@ Spot and right-sized GPU nodes, scale-to-zero with Karpenter and KEDA, and cost-
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-Karpenter%20%7C%20KEDA-326ce5?logo=kubernetes&logoColor=white)
 ![Observability](https://img.shields.io/badge/Prometheus%20%7C%20Grafana-cost%20per%20job-e6522c?logo=prometheus&logoColor=white)
 
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Sajedul%20Islam-0a66c2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sajedul-islam-devops)
+[![Book a free 20-minute call](https://img.shields.io/badge/Book-free%2020--min%20AWS%20cost%20review-1f6f68?logo=calendly&logoColor=white)](https://calendly.com/sajedul-islam-devops/free-20-min-aws-cost-review)
+
+> **Paying too much for GPUs on AWS?** [Book a free 20-minute AWS cost review](https://calendly.com/sajedul-islam-devops/free-20-min-aws-cost-review). We look at your GPU setup together and find where the money goes. No obligation.
+
 ---
 
 ## Contents
@@ -25,7 +30,7 @@ Spot and right-sized GPU nodes, scale-to-zero with Karpenter and KEDA, and cost-
 - [Getting started](#getting-started)
 - [Working on this repo with Claude Code](#working-on-this-repo-with-claude-code)
 - [Security](#security)
-- [Author](#author)
+- [Author and free cost review](#author)
 
 ---
 
@@ -240,5 +245,19 @@ Hook scripts need `jq`. Optional validators: `terraform`, `kubeconform`, `yamlli
 ## Author
 
 **Md Sajedul Islam** · DevOps and FinOps engineer
+
+- LinkedIn: [linkedin.com/in/sajedul-islam-devops](https://www.linkedin.com/in/sajedul-islam-devops)
+- Free 20-minute AWS cost review: [book a time on Calendly](https://calendly.com/sajedul-islam-devops/free-20-min-aws-cost-review)
+
+### Free 20-minute AWS cost review
+
+Bring your current setup. In 20 minutes we cover:
+
+- Where your GPU and EKS spend goes today
+- Which workloads could run on Spot or smaller GPU instances
+- Whether scale-to-zero fits your traffic
+- A short list of next steps you can act on, with or without my help
+
+[**Book your free call →**](https://calendly.com/sajedul-islam-devops/free-20-min-aws-cost-review)
 
 If this project helps you or your team reduce GPU spend, a ⭐ helps others find it.
