@@ -18,7 +18,7 @@ and cost-per-job dashboards in Prometheus and Grafana. Public, client-facing rep
 
 ## Commands
 
-- Render diagram: `python3 -m venv .venv && .venv/bin/pip install diagrams && .venv/bin/python docs/diagrams/architecture.py` (needs `brew install graphviz`)
+- Render diagram: `python3 -m venv .venv && .venv/bin/pip install diagrams pillow && .venv/bin/python docs/diagrams/architecture.py` (needs `brew install graphviz`)
 - Validate manifests: `kubeconform -strict -ignore-missing-schemas k8s/`
 - Terraform checks: `terraform fmt -recursive && terraform validate && terraform plan`. Applying changes is done by a human only.
 

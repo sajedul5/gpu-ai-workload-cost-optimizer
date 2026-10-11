@@ -1,12 +1,13 @@
 """Render the architecture diagram with official AWS icons.
 
 Usage:
-    pip install diagrams          # also needs Graphviz: brew install graphviz
+    pip install diagrams pillow   # also needs Graphviz: brew install graphviz
     python docs/diagrams/architecture.py
 
 Writes docs/images/architecture.png.
 """
 
+from datetime import date
 from pathlib import Path
 
 from diagrams import Cluster, Diagram, Edge
@@ -18,9 +19,11 @@ from diagrams.k8s.clusterconfig import HPA
 from diagrams.k8s.compute import Pod
 from diagrams.k8s.controlplane import CCM
 from diagrams.onprem.monitoring import Grafana, Prometheus
+from PIL import Image, ImageDraw, ImageFont
 
 OUT = Path(__file__).resolve().parents[1] / "images" / "architecture"
 OUT.parent.mkdir(parents=True, exist_ok=True)
+COPYRIGHT = f"\u00a9 {date.today().year} Sajedul Islam \u00b7 DevOps Engineer"
 
 graph_attr = {
     "fontsize": "22",
@@ -81,3 +84,26 @@ with Diagram(
     cur >> Edge(label="prices", style="dashed") >> prom
     prom >> grafana
     grafana >> Edge(label="alerts", style="dashed") >> budgets
+
+
+def add_copyright(png: Path, text: str) -> None:
+    """Add a footer strip with the copyright notice to the rendered PNG."""
+    img = Image.open(png).convert("RGB")
+    strip = max(48, img.height // 28)
+    out = Image.new("RGB", (img.width, img.height + strip), "white")
+    out.paste(img, (0, 0))
+    draw = ImageDraw.Draw(out)
+    try:
+        font = ImageFont.truetype("Helvetica.ttc", strip // 2)
+    except OSError:
+        try:
+            font = ImageFont.truetype("DejaVuSans.ttf", strip // 2)
+        except OSError:
+            font = ImageFont.load_default()
+    draw.line([(40, img.height), (img.width - 40, img.height)], fill="#D8E0DF", width=2)
+    w = draw.textlength(text, font=font)
+    draw.text((img.width - w - 40, img.height + strip // 4), text, fill="#566664", font=font)
+    out.save(png)
+
+
+add_copyright(OUT.with_suffix(".png"), COPYRIGHT)

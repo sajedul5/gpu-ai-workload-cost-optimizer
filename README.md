@@ -206,7 +206,7 @@ Targets are set per environment after the Phase 1 baseline. These are the number
 ```bash
 brew install graphviz
 python3 -m venv .venv
-.venv/bin/pip install diagrams
+.venv/bin/pip install diagrams pillow
 .venv/bin/python docs/diagrams/architecture.py
 ```
 
